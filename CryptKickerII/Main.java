@@ -71,8 +71,8 @@ public class Main {
         }
 
         for (int i = 0; i < linhaCifrada.length(); i++) {
-            char c = linhaCifrada.charAt(i);   // cifra
-            char k = fraseChave.charAt(i);     // claro
+            char c = linhaCifrada.charAt(i);   // cifrada
+            char k = fraseChave.charAt(i);     // descifrada
 
             if (k == ' ') {
                 if (c != ' ') return null;
