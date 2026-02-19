@@ -9,7 +9,23 @@ import java.util.Scanner;
 
 public class Main {
 
-  record Compromisso(LocalTime inicio, LocalTime fim) {
+  // Substitui o "record Compromisso(LocalTime inicio, LocalTime fim)"
+  static class Compromisso {
+    private final LocalTime inicio;
+    private final LocalTime fim;
+
+    Compromisso(LocalTime inicio, LocalTime fim) {
+      this.inicio = inicio;
+      this.fim = fim;
+    }
+
+    LocalTime inicio() {
+      return inicio;
+    }
+
+    LocalTime fim() {
+      return fim;
+    }
   }
 
   public static void main(String[] args) {
@@ -24,7 +40,7 @@ public class Main {
       int quantidadeCompromissos = sc.nextInt();
       sc.nextLine();
 
-      List<Compromisso> compromissos = new ArrayList<>();
+      List<Compromisso> compromissos = new ArrayList<Compromisso>();
 
       for (int i = 0; i < quantidadeCompromissos; i++) {
         String linha = sc.nextLine();
@@ -39,9 +55,13 @@ public class Main {
       compromissos.add(new Compromisso(inicioExpediente, inicioExpediente));
       compromissos.add(new Compromisso(fimExpediente, fimExpediente));
 
-      List<Compromisso> compromissosOrdenados = compromissos.stream()
-          .sorted(Comparator.comparing(Compromisso::inicio))
-          .toList();
+      List<Compromisso> compromissosOrdenados = new ArrayList<Compromisso>(compromissos);
+      compromissosOrdenados.sort(new Comparator<Compromisso>() {
+        @Override
+        public int compare(Compromisso c1, Compromisso c2) {
+          return c1.inicio().compareTo(c2.inicio());
+        }
+      });
 
       LocalTime melhorInicioCochilo = inicioExpediente;
       int melhorDuracaoEmMinutos = -1;
@@ -68,17 +88,17 @@ public class Main {
 
       StringBuilder saida = new StringBuilder();
       saida.append("Day #")
-          .append(numeroDoDia)
-          .append(": the longest nap starts at ")
-          .append(formatarHora(melhorInicioCochilo))
-          .append(" and will last for ");
+              .append(numeroDoDia)
+              .append(": the longest nap starts at ")
+              .append(formatarHora(melhorInicioCochilo))
+              .append(" and will last for ");
 
       if (melhorDuracaoEmMinutos >= 60) {
         saida.append(horasCochilo).append(" hours and ");
       }
       saida.append(minutosCochilo).append(" minutes.");
 
-      System.out.println(saida);
+      System.out.println(saida.toString());
       numeroDoDia++;
     }
 
